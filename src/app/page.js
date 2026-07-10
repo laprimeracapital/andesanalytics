@@ -6,6 +6,8 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import { demoProposals, electoralSummary, demoRanking, electorate, topics } from "@/helpers/panel";
 import { metodologia } from "@/db/db";
+import TablePadron from "@/components/Tables/TablePadron";
+import TableComparation from "@/components/Tables/TableComparation";
 
 export default function Page() {
 
@@ -83,10 +85,7 @@ export default function Page() {
                             <div className="text-center">
                                 <p className="label text-primary">Listas electorales</p>
                                 <h2 className="text-2xl mt-2">Candidatos provinciales</h2>
-                                <p className="text-sm text-muted mt-3">
-                                    Consulta las listas, candidatos y planes de trabajo
-                                    presentados ante los organismos electorales.
-                                </p>
+                                <p className="text-sm text-muted mt-3">Consulta las listas, candidatos y planes de trabajo presentados ante los organismos electorales.</p>
                             </div>
                             <div className="w-full grid grid-cols-1 gap-md md:grid-cols-2 lg:grid-cols-3">
                                 {candidates.length > 0 ? (
@@ -110,54 +109,7 @@ export default function Page() {
                             <h2 className="text-2xl mt-2">Compara las propuestas</h2>
                             <p className="text-sm text-muted mt-3">Los puntajes representan el nivel de presencia y desarrollo de cada tema dentro del plan de gobierno.</p>
                         </div>
-                        <div className="card">
-                            <div className="w-full grid grid-cols-1 gap-md md:grid-cols-2">
-                                <div className="field">
-                                    <label htmlFor="first-organization" className="label">Primera organización</label>
-                                    <select id="first-organization" className="input" value={firstOrganization} onChange={event => setFirstOrganization(event.target.value)}>
-                                        {Object.keys(demoProposals).map(organization => (
-                                            <option key={organization} value={organization}>{organization}</option>
-                                        ))}
-                                    </select>
-                                </div>
-                                <div className="field">
-                                    <label htmlFor="second-organization" className="label">Segunda organización</label>
-                                    <select id="second-organization" className="input" value={secondOrganization} onChange={event => setSecondOrganization(event.target.value)}>
-                                        {Object.keys(demoProposals).map(organization => (
-                                            <option key={organization} value={organization}>{organization}</option>
-                                        ))}
-                                    </select>
-                                </div>
-                            </div>
-                            <div className="table-wrapper mt-lg">
-                                <table className="table">
-                                    <thead>
-                                        <tr>
-                                            <th>Tema</th>
-                                            <th>{firstOrganization}</th>
-                                            <th>{secondOrganization}</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {topics.map(topic => {
-                                            const firstValue = firstProposal[topic.key] || 0;
-                                            const secondValue = secondProposal[topic.key] || 0;
-                                            return (
-                                                <tr key={topic.key}>
-                                                    <td className="font-medium">{topic.label}</td>
-                                                    <td>
-                                                        <span className={firstValue > secondValue ? "badge badge-success" : "badge badge-secondary"}>{firstValue}</span>
-                                                    </td>
-                                                    <td>
-                                                        <span className={secondValue > firstValue ? "badge badge-success" : "badge badge-secondary"}>{secondValue}</span>
-                                                    </td>
-                                                </tr>
-                                            );
-                                        })}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                        <TableComparation/>
                     </div>
                 </section>
 
@@ -198,37 +150,7 @@ export default function Page() {
                             <h2 className="text-2xl mt-2">Radiografía del electorado de Jauja</h2>
                             <p className="text-sm text-muted mt-3">Información consolidada de los 34 distritos de la provincia.</p>
                         </div>
-                        <div className="w-full grid grid-cols-1 gap-md md:grid-cols-2 lg:grid-cols-4">
-                            {electorate.map(item => (
-                                <article key={item.label} className="card card-kpi">
-                                    <p className="card-kpi-label">{item.label}</p>
-                                    <p className="card-kpi-value">{item.value}</p>
-                                    <p className="card-kpi-description">{item.description}</p>
-                                </article>
-                            ))}
-                        </div>
-                        <div className="card card-subtle">
-                            <div className="card-header">
-                                <div>
-                                    <h3 className="card-title">Distribución por edades</h3>
-                                    <p className="card-description">Segmentación del padrón electoral provincial.</p>
-                                </div>
-                            </div>
-                            <div className="w-full grid grid-cols-1 gap-sm md:grid-cols-5">
-                                {[
-                                    "18 a 29",
-                                    "30 a 39",
-                                    "40 a 49",
-                                    "50 a 59",
-                                    "60 a más"
-                                ].map(age => (
-                                    <div key={age} className="border rounded-md p-md text-center bg-white">
-                                        <p className="text-lg font-semibold"> — </p>
-                                        <p className="text-xs text-muted mt-1">{age} años</p>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
+                        <TablePadron/>
                     </div>
                 </section>
 

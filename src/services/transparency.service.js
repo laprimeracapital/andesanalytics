@@ -30,3 +30,16 @@ export async function getTransparencyData() {
 
     return data;
 }
+
+export async function getPadronSummary() {
+
+    const { data, error } = await db.rpc("get_padron_summary", {
+        p_year: 2026,
+        p_province: "Jauja"
+    });
+
+    if(error) throw error;
+
+    return data[0];
+
+}

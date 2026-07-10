@@ -16,7 +16,8 @@ export async function getCandidates() {
             source_name,
             source_url,
             work_plan,
-
+            candidate_image,
+            list_image,
             electoral_candidates (
                 id_candidate,
                 id_hoja_vida,

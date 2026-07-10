@@ -201,6 +201,7 @@ video {
 
 img {
     font-style: italic;
+    border-radius: inherit;
 }
 
 svg {
