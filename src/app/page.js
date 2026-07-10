@@ -43,7 +43,7 @@ export default function Page() {
                     <div className="w-full flex flex-col items-center gap-lg">
                         <span className="badge badge-primary">Elecciones provinciales 2026</span>
                         <div className="w-full flex flex-col gap-md">
-                            <h1 className="text-4xl font-medium leading-tight">
+                            <h1 className="text-4xl font-regular leading-tight">
                                 Análisis de los{" "}
                                 <b>candidatos provinciales</b>
                                 <br />
