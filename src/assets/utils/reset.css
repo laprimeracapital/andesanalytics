@@ -1,0 +1,586 @@
+/* =========================================================
+   RESET
+========================================================= */
+
+
+/* =========================================================
+   BOX SIZING
+========================================================= */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   DOCUMENT
+========================================================= */
+
+html {
+    min-height: 100%;
+    font-family: var(--font-base);
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-normal);
+    color-scheme: light;
+
+    scroll-behavior: smooth;
+    scroll-padding-top: var(--height-header);
+
+    text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    tab-size: 4;
+}
+
+body {
+    min-width: 20rem;
+    min-height: 100vh;
+    margin: var(--space-0);
+
+    font-family: var(--font-base);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-normal);
+    line-height: var(--line-height-normal);
+
+    color: var(--color-text);
+    background-color: var(--color-background);
+
+    overflow-x: hidden;
+}
+
+
+/* =========================================================
+   GLOBAL RESET
+========================================================= */
+
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+figure,
+blockquote,
+dl,
+dd {
+    margin: var(--space-0);
+}
+
+ul,
+ol {
+    margin: var(--space-0);
+    padding: var(--space-0);
+}
+
+fieldset {
+    margin: var(--space-0);
+    padding: var(--space-0);
+}
+
+button,
+input,
+textarea,
+select {
+    margin: var(--space-0);
+}
+
+
+/* =========================================================
+   TYPOGRAPHY
+========================================================= */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font: inherit;
+    color: inherit;
+}
+
+p {
+    overflow-wrap: break-word;
+}
+
+b,
+strong {
+    font-weight: var(--font-weight-bold);
+}
+
+small {
+    font-size: var(--font-size-sm);
+}
+
+sub,
+sup {
+    position: relative;
+
+    font-size: var(--font-size-xs);
+    line-height: var(--line-height-none);
+
+    vertical-align: baseline;
+}
+
+sub {
+    bottom: -0.25em;
+}
+
+sup {
+    top: -0.5em;
+}
+
+abbr[title] {
+    text-decoration: underline dotted;
+    cursor: help;
+}
+
+mark {
+    color: var(--color-text);
+    background-color: var(--color-warning-50);
+}
+
+
+/* =========================================================
+   LINKS
+========================================================= */
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+a:not([class]) {
+    color: var(--color-link);
+    text-decoration: none;
+}
+
+a:not([class]):hover {
+    color: var(--color-link-hover);
+}
+
+
+/* =========================================================
+   LISTS
+========================================================= */
+
+ul,
+ol {
+    list-style: none;
+}
+
+nav ul,
+nav ol {
+    list-style: none;
+}
+
+
+/* =========================================================
+   MEDIA
+========================================================= */
+
+img,
+picture,
+video,
+canvas,
+svg {
+    display: block;
+    max-width: 100%;
+}
+
+img,
+video {
+    height: auto;
+}
+
+img {
+    font-style: italic;
+}
+
+svg {
+    flex-shrink: 0;
+}
+
+iframe {
+    display: block;
+    max-width: 100%;
+
+    border: var(--border-width-0);
+}
+
+audio {
+    width: 100%;
+}
+
+
+/* =========================================================
+   FIGURES
+========================================================= */
+
+figure {
+    margin: var(--space-0);
+}
+
+figcaption {
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+}
+
+
+/* =========================================================
+   FORMS
+========================================================= */
+
+button,
+input,
+optgroup,
+select,
+textarea {
+    font: inherit;
+    color: inherit;
+}
+
+button,
+select {
+    text-transform: none;
+}
+
+button,
+[type="button"],
+[type="reset"],
+[type="submit"] {
+    appearance: button;
+    -webkit-appearance: button;
+}
+
+button,
+[role="button"] {
+    cursor: pointer;
+}
+
+button:disabled,
+input:disabled,
+select:disabled,
+textarea:disabled {
+    cursor: not-allowed;
+    opacity: var(--opacity-disabled);
+}
+
+input,
+textarea,
+select {
+    max-width: 100%;
+}
+
+textarea {
+    resize: vertical;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: var(--color-text-muted);
+    opacity: var(--opacity-muted);
+}
+
+input[type="search"] {
+    appearance: textfield;
+    -webkit-appearance: textfield;
+}
+
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+}
+
+input[type="number"] {
+    appearance: textfield;
+    -moz-appearance: textfield;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    margin: var(--space-0);
+    -webkit-appearance: none;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+    padding: var(--space-0);
+}
+
+input[type="file"] {
+    max-width: 100%;
+}
+
+input[type="file"]::file-selector-button {
+    font: inherit;
+    cursor: pointer;
+}
+
+fieldset {
+    min-width: var(--space-0);
+    border: var(--border-width-0);
+}
+
+legend {
+    padding: var(--space-0);
+}
+
+progress {
+    vertical-align: baseline;
+}
+
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+button {
+    padding: var(--space-0);
+
+    color: inherit;
+    background: none;
+    border: var(--border-width-0);
+
+    font: inherit;
+}
+
+
+/* =========================================================
+   TABLES
+========================================================= */
+
+table {
+    width: 100%;
+
+    border-collapse: collapse;
+    border-spacing: var(--space-0);
+
+    text-indent: var(--space-0);
+}
+
+th {
+    font-weight: var(--font-weight-semibold);
+    text-align: inherit;
+}
+
+caption {
+    color: var(--color-text-secondary);
+    text-align: inherit;
+}
+
+
+/* =========================================================
+   CODE
+========================================================= */
+
+code,
+kbd,
+samp,
+pre {
+    font-family: var(--font-family-mono);
+    font-size: 1em;
+}
+
+pre {
+    max-width: 100%;
+    overflow: auto;
+}
+
+code {
+    overflow-wrap: break-word;
+}
+
+
+/* =========================================================
+   BLOCKQUOTES
+========================================================= */
+
+blockquote,
+q {
+    quotes: none;
+}
+
+blockquote::before,
+blockquote::after,
+q::before,
+q::after {
+    content: "";
+}
+
+
+/* =========================================================
+   HORIZONTAL RULE
+========================================================= */
+
+hr {
+    height: var(--border-width-1);
+    margin: var(--space-0);
+
+    color: inherit;
+    background-color: var(--color-border);
+    border: var(--border-width-0);
+}
+
+
+/* =========================================================
+   DETAILS
+========================================================= */
+
+summary {
+    display: list-item;
+    cursor: pointer;
+}
+
+details > summary:first-of-type {
+    list-style: inside disclosure-closed;
+}
+
+details[open] > summary:first-of-type {
+    list-style-type: disclosure-open;
+}
+
+
+/* =========================================================
+   DIALOG
+========================================================= */
+
+dialog {
+    max-width: calc(100% - var(--space-page-x) * 2);
+    max-height: calc(100% - var(--space-page-y) * 2);
+
+    margin: auto;
+    padding: var(--space-0);
+
+    color: var(--color-text);
+    background-color: var(--color-surface);
+
+    border: var(--border-width-0);
+}
+
+dialog::backdrop {
+    background-color: var(--color-overlay);
+}
+
+
+/* =========================================================
+   HIDDEN
+========================================================= */
+
+[hidden] {
+    display: none !important;
+}
+
+template {
+    display: none;
+}
+
+
+/* =========================================================
+   INTERACTION
+========================================================= */
+
+:focus {
+    outline: none;
+}
+
+:focus-visible {
+    outline: var(--border-width-2) solid var(--color-border-focus);
+    outline-offset: var(--space-1);
+}
+
+::selection {
+    color: var(--color-text-inverse);
+    background-color: var(--color-primary);
+}
+
+
+/* =========================================================
+   ACCESSIBILITY
+========================================================= */
+
+[aria-disabled="true"] {
+    cursor: not-allowed;
+    opacity: var(--opacity-disabled);
+}
+
+[aria-busy="true"] {
+    cursor: progress;
+}
+
+[aria-hidden="true"] {
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   MOBILE INTERACTION
+========================================================= */
+
+a,
+button,
+input,
+textarea,
+select,
+summary {
+    -webkit-tap-highlight-color: transparent;
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+
+/* =========================================================
+   PRINT
+========================================================= */
+
+@media print {
+
+    *,
+    *::before,
+    *::after {
+        box-shadow: none !important;
+        text-shadow: none !important;
+    }
+
+    body {
+        color: var(--color-black);
+        background-color: var(--color-white);
+    }
+
+    a {
+        color: inherit;
+        text-decoration: underline;
+    }
+
+    img,
+    table,
+    pre,
+    blockquote {
+        break-inside: avoid;
+    }
+}

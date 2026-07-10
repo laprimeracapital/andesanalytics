@@ -1,0 +1,127 @@
+/* =========================================================
+   CARD
+========================================================= */
+
+.card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    color: var(--color-text);
+    padding: var(--space-4);
+    background-color: var(--color-surface);
+    border: var(--border-width-1) solid var(--color-border);
+    border-radius: var(--card-radius);
+    box-shadow: var(--card-shadow);
+    overflow: hidden;
+}
+
+.card__header,
+.card__body,
+.card__footer {
+    padding-inline: var(--card-padding);
+}
+
+.card__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-4);
+
+    padding-top: var(--card-padding);
+    padding-bottom: var(--space-4);
+}
+
+.card__body {
+    flex: 1;
+
+    padding-top: var(--space-4);
+    padding-bottom: var(--card-padding);
+}
+
+.card__header + .card__body {
+    padding-top: var(--space-0);
+}
+
+.card__footer {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+
+    padding-top: var(--space-4);
+    padding-bottom: var(--card-padding);
+
+    border-top: var(--border-width-1) solid var(--color-border);
+}
+
+.card__title {
+    color: var(--color-text);
+
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-tight);
+}
+
+.card__subtitle {
+    margin-top: var(--space-1);
+
+    color: var(--color-text-secondary);
+
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-normal);
+}
+
+.card__description {
+    color: var(--color-text-secondary);
+
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-relaxed);
+}
+
+.card__media {
+    width: 100%;
+
+    aspect-ratio: var(--aspect-video);
+
+    object-fit: cover;
+}
+
+
+/* =========================================================
+   CARD VARIANTS
+========================================================= */
+
+.card--flat {
+    box-shadow: var(--shadow-none);
+}
+
+.card--borderless {
+    border-color: transparent;
+}
+
+.card--elevated {
+    border-color: transparent;
+    box-shadow: var(--shadow-lg);
+}
+
+.card--interactive {
+    cursor: pointer;
+
+    transition:
+        border-color var(--transition-normal),
+        box-shadow var(--transition-normal),
+        transform var(--transition-normal);
+}
+
+.card--interactive:hover {
+    border-color: var(--color-primary-200);
+
+    box-shadow: var(--shadow-lg);
+
+    transform: translateY(-0.25rem);
+}
+
+.card--interactive:focus-within {
+    border-color: var(--color-border-focus);
+    box-shadow: var(--focus-ring);
+}

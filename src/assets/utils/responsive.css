@@ -1,0 +1,36 @@
+
+/* =========================================================
+   RESPONSIVE COMPONENTS
+========================================================= */
+
+@media (max-width: 40rem) {
+
+    .btn--responsive {
+        width: 100%;
+    }
+
+    .btn-group--responsive {
+        display: flex;
+        flex-direction: column;
+
+        width: 100%;
+    }
+
+    .btn-group--responsive .btn {
+        width: 100%;
+        border-radius: var(--button-radius);
+    }
+
+    .btn-group--responsive .btn + .btn {
+        margin-top: calc(var(--border-width-1) * -1);
+        margin-left: var(--space-0);
+    }
+
+    .card__footer {
+        flex-wrap: wrap;
+    }
+
+    .card__footer .btn--responsive {
+        flex: 1 1 100%;
+    }
+}
