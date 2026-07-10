@@ -3,37 +3,22 @@
 import CandidateCard from "@/components/Cards/CandidateCard";
 import { useDB } from "@/context/DBContext";
 import Link from "next/link";
-import { useMemo, useState } from "react";
-import { demoProposals, electoralSummary, demoRanking, electorate, topics } from "@/helpers/panel";
+import { electoralSummary } from "@/helpers/panel";
 import { metodologia } from "@/db/db";
 import TablePadron from "@/components/Tables/TablePadron";
 import TableComparation from "@/components/Tables/TableComparation";
+import CardPlanRanking from "@/components/Cards/CardPlanRanking";
 
 export default function Page() {
 
     const { candidates = [] } = useDB();
-
-    const organizations = useMemo(() => {
-        return candidates.map(item => item.political_organization);
-    }, [candidates]);
-
-    const [firstOrganization, setFirstOrganization] = useState(
-        organizations[0] || "PODEMOS PERU"
-    );
-
-    const [secondOrganization, setSecondOrganization] = useState(
-        organizations[1] || "ALIANZA PARA EL PROGRESO"
-    );
-
-    const firstProposal = demoProposals[firstOrganization] || {};
-    const secondProposal = demoProposals[secondOrganization] || {};
 
     return (
         <>
             <header className="w-full h-16 bg-white border-b">
                 <div className="w m-auto flex items-center justify-between h-full lg:w" style={{"--w": "90%", "--w-lg": "60%"}}>
                     <Link href="/" className="text-lg font-medium">Andes Analytics</Link>
-                    <span className="badge badge-success badge--success">Activo</span>
+                    <span className="badge badge-success badge--success">Sistemas activos</span>
                 </div>
             </header>
 
@@ -121,23 +106,7 @@ export default function Page() {
                                 <h2 className="text-2xl mt-2">Índice técnico de planes de gobierno</h2>
                                 <p className="text-sm text-muted mt-3">Este índice evalúa claridad, viabilidad, impacto, innovación, sustento técnico y enfoque local.</p>
                             </div>
-                            <div className="card">
-                                <div className="w-full flex flex-col gap-md">
-                                    {demoRanking.map((item, index) => (
-                                        <article key={item.organization} className="w-full flex items-center gap-md border-b pb-md">
-                                            <div className="avatar avatar-md">{index + 1}</div>
-                                            <div className="flex-1">
-                                                <h3 className="text-sm font-medium">{item.organization}</h3>
-                                                <p className="text-xs text-muted mt-1">{item.candidate}</p>
-                                            </div>
-                                            <div className="text-right">
-                                                <p className="text-xl font-semibold">{item.score}</p>
-                                                <p className="text-xs text-muted">de 100</p>
-                                            </div>
-                                        </article>
-                                    ))}
-                                </div>
-                            </div>
+                            <CardPlanRanking/>
                             <p className="text-xs text-muted text-center">El índice no representa intención de voto ni predice resultados electorales.</p>
                         </div>
                     </div>

@@ -1,6 +1,7 @@
 'use client'
 import { useCandidate } from "@/hooks/candidate.hook";
 import { usePadron } from "@/hooks/padron.hook";
+import { usePlanAnalysis } from "@/hooks/usePlanAnalysis";
 import { createContext, useContext, useEffect } from "react";
 
 const DBContext = createContext();
@@ -9,6 +10,7 @@ export const DBProvider = ({ children }) => {
 
     const candidates = useCandidate();
     const padron = usePadron();
+    const planAnalysisState = usePlanAnalysis();
 
     useEffect(() => {
         (async () => {
@@ -21,7 +23,8 @@ export const DBProvider = ({ children }) => {
     const contextValue = {
         candidates: candidates.candidates,
         loadCandidates: candidates.loading,
-        ...padron
+        ...padron,
+        ...planAnalysisState
     }
 
     return (

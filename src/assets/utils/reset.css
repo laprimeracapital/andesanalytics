@@ -533,6 +533,8 @@ summary {
     -webkit-tap-highlight-color: transparent;
 }
 
+.cursor-pointer {cursor: pointer; }
+
 
 /* =========================================================
    REDUCED MOTION
