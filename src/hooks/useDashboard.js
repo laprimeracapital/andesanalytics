@@ -13,17 +13,13 @@ export const useDashboard = () => {
         try {
             setLoading(true);
             setError(null);
-
             const data = await getAnalyticsDashboard(days);
-
             setAnalytics(data);
-
             return data;
         } catch (error) {
             console.error("Error cargando dashboard:", error);
             setError(error);
             setAnalytics(null);
-
             return null;
         } finally {
             setLoading(false);

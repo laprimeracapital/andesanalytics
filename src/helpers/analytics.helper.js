@@ -8,7 +8,6 @@ function createUUID() {
     if (typeof crypto !== "undefined" && crypto.randomUUID) {
         return crypto.randomUUID();
     }
-
     throw new Error("El navegador no permite generar UUID.");
 }
 

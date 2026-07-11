@@ -58,11 +58,7 @@ export const useCitizenPulse = () => {
 
             return payload;
         } catch (error) {
-            console.error(
-                "Error procesando Pulso Ciudadano:",
-                error
-            );
-
+            console.error("Error procesando Pulso Ciudadano:",error);
             setError(error);
             throw error;
         } finally {

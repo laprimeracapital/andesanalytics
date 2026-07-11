@@ -25,13 +25,7 @@ export async function registerAnalyticsSession(payload) {
     if (error) throw error;
 }
 
-export async function trackEvent({
-    visitorKey,
-    sessionKey,
-    eventName,
-    pagePath,
-    eventData = {}
-}) {
+export async function trackEvent({visitorKey, sessionKey, eventName, pagePath, eventData = {}}) {
     const { error } = await db
         .from("web_events")
         .insert({
