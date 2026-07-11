@@ -43,6 +43,7 @@ export default function Page() {
                         <div className="flex flex-wrap justify-center gap-md">
                             <Link href="#candidatos" className="btn btn-primary btn-lg">Candidatos</Link>
                             <Link href="#comparador" className="btn btn-secondary btn-lg">Comparar propuestas</Link>
+                            <Link href="/pulso-ciudadano" className="btn btn--secondary btn-lg">Empezar evaluación</Link>
                         </div>
                     </div>
                 </section>

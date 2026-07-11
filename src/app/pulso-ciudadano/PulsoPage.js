@@ -1,9 +1,10 @@
 'use client';
 
 import { questions } from "@/db/db";
+import { useAnalytics } from "@/hooks/useAnalytics";
 import { useCitizenPulse } from "@/hooks/useCitizenPulse";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 
 const INITIAL_FORM = questions.reduce((acc, question) => {
@@ -75,7 +76,8 @@ function calculateCitizenProfile(form) {
 }
 
 export default function Page() {
-
+    const { track } = useAnalytics();
+    
     const {
         result: affinityResult,
         loading,
@@ -189,6 +191,11 @@ export default function Page() {
 
         try {
             await analyzeAndSave(form);
+            track("quiz_completed", {
+                top_candidate: result.top_three[0].candidate_name,
+                organization: result.top_three[0].organization_name,
+                affinity: result.top_three[0].affinity
+            });
             setFinished(true);
 
             window.scrollTo({
@@ -210,7 +217,10 @@ export default function Page() {
     const handleFeedback = async value => {
         try {
             await sendFeedback(value);
-
+            track("candidate_like", {
+                candidate_id,
+                organization
+            });
             toast.success(
                 value === 1
                     ? "Gracias por confirmar tu afinidad."
@@ -595,6 +605,16 @@ export default function Page() {
             </>
         );
     }
+
+    useEffect(() => {
+        track("quiz_step", {
+            step
+        });
+    }, [step]);
+
+    useEffect(() => {
+        track("quiz_started");
+    }, []);
 
     return (
         <>

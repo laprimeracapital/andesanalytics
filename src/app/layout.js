@@ -2,6 +2,7 @@ import { Poppins } from "next/font/google";
 import '@/assets/global.css'
 import { DBProvider } from "@/context/DBContext";
 import { Toaster } from "sonner";
+import AnalyticsTracker from "@/context/AnalyticsTracker";
 
 const poppins = Poppins({
     weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
@@ -158,6 +159,7 @@ export default function RootLayout ({ children }) {
         <html lang="es" className={`${poppins.variable}`}>
             <body>
                 <script type="application/ld+json" dangerouslySetInnerHTML={{__html: JSON.stringify(jsonLd)}}/>
+                <AnalyticsTracker/>
                 <DBProvider>
                     {children}
                 </DBProvider>
