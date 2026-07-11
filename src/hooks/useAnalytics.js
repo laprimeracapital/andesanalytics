@@ -2,25 +2,38 @@
 
 import { useCallback, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
+import { getCampaignParams, getDeviceData, getSessionId, getVisitorId } from "@/helpers/analytics.helper";
+import { registerAnalyticsSession, trackEvent } from "@/services/analytics.service";
+import { ENV } from "@/config";
 
-import {
-    getCampaignParams,
-    getDeviceData,
-    getSessionId,
-    getVisitorId
-} from "@/helpers/analytics.helper";
+const EXCLUDED_PATHS = [
+    "/dashboard",
+    "/admin",
+    "/login"
+];
 
-import {
-    registerAnalyticsSession,
-    trackEvent
-} from "@/services/analytics.service";
+const shouldTrack = pathname => {
+    if (!pathname) return false;
+
+    if (ENV !== "production") {
+        return false;
+    }
+
+    return !EXCLUDED_PATHS.some(route =>
+        pathname.startsWith(route)
+    );
+};
 
 export function useAnalytics() {
     const pathname = usePathname();
     const initialized = useRef(false);
 
+    const trackingEnabled = shouldTrack(pathname);
+
     const sendEvent = useCallback(
         async (eventName, eventData = {}) => {
+            if (!shouldTrack(pathname)) return;
+
             try {
                 const visitorKey = getVisitorId();
                 const sessionKey = getSessionId();
@@ -45,12 +58,19 @@ export function useAnalytics() {
     );
 
     useEffect(() => {
+        if (!trackingEnabled) {
+            initialized.current = false;
+            return;
+        }
+
         async function initialize() {
             try {
                 const visitorKey = getVisitorId();
                 const sessionKey = getSessionId();
                 const campaign = getCampaignParams();
                 const device = getDeviceData();
+
+                if (!visitorKey || !sessionKey) return;
 
                 await registerAnalyticsSession({
                     visitorKey,
@@ -62,6 +82,16 @@ export function useAnalytics() {
                 });
 
                 initialized.current = true;
+
+                await trackEvent({
+                    visitorKey,
+                    sessionKey,
+                    eventName: "page_view",
+                    pagePath: pathname,
+                    eventData: {
+                        title: document.title
+                    }
+                });
             } catch (error) {
                 console.error(
                     "Error iniciando analítica:",
@@ -70,20 +100,11 @@ export function useAnalytics() {
             }
         }
 
-        if (!initialized.current) {
-            initialize();
-        }
-    }, []);
-
-    useEffect(() => {
-        if (!initialized.current) return;
-
-        sendEvent("page_view", {
-            title: document.title
-        });
-    }, [pathname, sendEvent]);
+        initialize();
+    }, [pathname, trackingEnabled]);
 
     return {
-        track: sendEvent
+        track: sendEvent,
+        trackingEnabled
     };
 }

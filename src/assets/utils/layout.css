@@ -48,7 +48,7 @@
     width: auto;
 }
 
-.w { width: var(--w); }
+.w { width: var(--w); min-width: var(--mnw); max-width: var(--mxw); }
 
 .w-0 {
     width: var(--space-0);
@@ -1395,7 +1395,7 @@
         display: none;
     }
 
-    .lg\:w { width: var(--w-lg); }
+    .lg\:w { width: var(--w-lg); min-width: var(--mnw-lg); max-width: var(--mxw-lg);}
     .lg\:w-auto {
         width: auto;
     }

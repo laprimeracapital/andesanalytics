@@ -3,3 +3,5 @@ export const SUPABASE = {
     KEY: process.env.NEXT_PUBLIC_SUPABASE_KEY,
     SERVICE: process.env.NEXT_PUBLIC_SUPABASE_SERVICE
 }
+
+export const ENV = process.env.NEXT_PUBLIC_NODE_ENV
