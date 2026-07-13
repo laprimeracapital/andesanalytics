@@ -10,9 +10,7 @@ export const useCitizenPulse = () => {
     const [answerId, setAnswerId] = useState(null);
 
     const [loading, setLoading] = useState(false);
-    const [feedbackLoading, setFeedbackLoading] =
-        useState(false);
-
+    const [feedbackLoading, setFeedbackLoading] = useState(false);
     const [error, setError] = useState(null);
 
     const analyzeAndSave = async form => {
@@ -31,10 +29,7 @@ export const useCitizenPulse = () => {
                 );
             }
 
-            const ranking = calculateAffinity(
-                form,
-                plans
-            );
+            const ranking = calculateAffinity(form, plans);
 
             const response = await saveCitizenAnswer({
                 visitorId,
@@ -48,6 +43,11 @@ export const useCitizenPulse = () => {
                 session_id: sessionId,
                 ranking,
                 top_three: ranking.slice(0, 3),
+                demographic: {
+                    gender: form.gender,
+                    district_name: form.district_name,
+                    age_range: form.age_range
+                },
                 created_at: new Date().toISOString()
             };
 

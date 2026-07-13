@@ -21,7 +21,144 @@ export const metodologia = [
     }
 ]
 
+const districts = [
+    {
+        "district_name": "Acolla"
+    },
+    {
+        "district_name": "Apata"
+    },
+    {
+        "district_name": "Ataura"
+    },
+    {
+        "district_name": "Canchayllo"
+    },
+    {
+        "district_name": "Curicaca"
+    },
+    {
+        "district_name": "El Mantaro"
+    },
+    {
+        "district_name": "Huamalí"
+    },
+    {
+        "district_name": "Huaripampa"
+    },
+    {
+        "district_name": "Huertas"
+    },
+    {
+        "district_name": "Janjaillo"
+    },
+    {
+        "district_name": "Jauja"
+    },
+    {
+        "district_name": "Julcán"
+    },
+    {
+        "district_name": "Leonor Ordoñez"
+    },
+    {
+        "district_name": "Llocllapampa"
+    },
+    {
+        "district_name": "Marco"
+    },
+    {
+        "district_name": "Masma"
+    },
+    {
+        "district_name": "Masma Chicche"
+    },
+    {
+        "district_name": "Molinos"
+    },
+    {
+        "district_name": "Monobamba"
+    },
+    {
+        "district_name": "Muqui"
+    },
+    {
+        "district_name": "Muquiyauyo"
+    },
+    {
+        "district_name": "Paca"
+    },
+    {
+        "district_name": "Paccha"
+    },
+    {
+        "district_name": "Pancán"
+    },
+    {
+        "district_name": "Parco"
+    },
+    {
+        "district_name": "Pomacancha"
+    },
+    {
+        "district_name": "Ricrán"
+    },
+    {
+        "district_name": "San Lorenzo"
+    },
+    {
+        "district_name": "San Pedro de Chunán"
+    },
+    {
+        "district_name": "Sausa"
+    },
+    {
+        "district_name": "Sincos"
+    },
+    {
+        "district_name": "Tunan Marca"
+    },
+    {
+        "district_name": "Yauli"
+    },
+    {
+        "district_name": "Yauyos"
+    }
+]
+
 export const questions = [
+    {
+        id: "gender",
+        title: "¿Con qué género te identificas?",
+        description: "Esta información nos ayuda a comprender mejor los resultados agregados.",
+        type: "radio",
+        required: true,
+        options: [
+            {
+                key: "male",
+                value: "Masculino"
+            },
+            {
+                key: "female",
+                value: "Femenino"
+            },
+            {
+                key: "prefer_not_say",
+                value: "Prefiero no decirlo"
+            }
+        ]
+    },
+    {
+        id: "district_name",
+        title: "¿En qué distrito resides?",
+        description: "Solo utilizaremos esta información con fines estadísticos.",
+        type: "radio",
+        required: true,
+        options: districts.map(item => ({
+            key: item.district_name,
+            value: item.district_name
+        }))
+    },
     {
         id: "main_concern",
         title: "¿Cuál es el principal problema que debería atender la próxima gestión provincial?",

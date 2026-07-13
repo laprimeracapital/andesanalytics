@@ -26,12 +26,12 @@ export default function Page() {
 
                 await track("quiz_completed", {
                     answer_id: result?.answer_id ?? null,
-                    top_candidate:
-                        topResult?.candidate_name ?? null,
-                    organization:
-                        topResult?.political_organization ?? null,
-                    affinity:
-                        Number(topResult?.affinity || 0)
+                    gender: form.gender,
+                    district_name: form.district_name,
+                    age_range: form.age_range,
+                    top_candidate: topResult?.candidate_name ?? null,
+                    organization: topResult?.political_organization ?? null,
+                    affinity: Number(topResult?.affinity || 0)
                 });
 
                 setFinished(true);
@@ -41,14 +41,7 @@ export default function Page() {
                     behavior: "smooth"
                 });
             } catch (error) {
-                toast.error(
-                    "No se pudo procesar el resultado",
-                    {
-                        description:
-                            error?.message ||
-                            "Inténtalo nuevamente."
-                    }
-                );
+                toast.error("No se pudo procesar el resultado",{description:error?.message ||"Inténtalo nuevamente."});
             }
         },
         [analyzeAndSave, track]

@@ -24,34 +24,19 @@ export async function saveCitizenAnswer({visitorId, sessionId, form, ranking}) {
         .insert({
             visitor_id: visitorId,
             session_id: sessionId,
-
-            age_range: form.age_range,
-            main_concern: form.main_concern,
-            priority_topics: form.priority_topics,
-
-            candidate_value: form.candidate_value,
-            preferred_management:
-                form.preferred_management,
-
-            work_plan_importance:
-                form.work_plan_importance,
-
-            candidate_knowledge:
-                form.candidate_knowledge,
-
-            vote_decision: form.vote_decision,
-
-            recommended_list:
-                winner?.list_id ?? null,
-
-            /*
-             * Si recommended_candidate apunta a id_candidate,
-             * déjalo null mientras no estés recuperando ese ID.
-             */
-            recommended_candidate: null,
-
+            gender: form.gender || null,
+            district_name: form.district_name || null,
+            age_range: form.age_range || null,
+            main_concern: form.main_concern || null,
+            priority_topics: form.priority_topics || null,
+            candidate_value: form.candidate_value || null,
+            preferred_management: form.preferred_management || null,
+            work_plan_importance: form.work_plan_importance || null,
+            candidate_knowledge: form.candidate_knowledge || null,
+            vote_decision: form.vote_decision || null,
+            recommended_list: winner?.list_id ?? null,
+            recommended_candidate: winner?.candidate_id ?? null,
             affinity: ranking,
-
             feedback: 0,
             completed_at: new Date().toISOString()
         })
