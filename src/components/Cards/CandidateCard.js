@@ -20,7 +20,7 @@ export default function CandidateCard({ item }) {
                     <p className="text-xs text-muted mt-1">{item.political_organization}</p>
                 </div>
                 <div className="w-full flex gap-sm mt-sm">
-                    <Link href={`/candidatos/${item.id_list}`}className="btn btn-secondary btn-sm btn-block">Ver lista</Link>
+                    <Link href={`/candidates/${item.id_list}`}className="btn btn-secondary btn-sm btn-block">Ver lista</Link>
                     {item.work_plan && (
                         <Link href={item.work_plan} target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-sm btn-block">Ver plan</Link>
                     )}
