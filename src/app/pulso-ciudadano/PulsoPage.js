@@ -86,6 +86,19 @@ export default function Page() {
         setFinished(false);
     };
 
+    const shareReferral = async () => {
+        const url =
+            `${window.location.origin}/pulso-ciudadano` +
+            `?ref=${affinityResult.referral_code}` +
+            `&utm_source=whatsapp` +
+            `&utm_medium=referral` +
+            `&utm_campaign=pulso_ciudadano`;
+
+        const text = "Participa en Pulso Ciudadano Jauja y descubre qué planes de gobierno se acercan más a tus prioridades.";
+
+        window.open(`https://wa.me/?text=${encodeURIComponent(`${text}\n\n${url}`)}`, "_blank");
+    };
+
     if (!questions.length) {
         return (
             <main className="w-full min-h-screen grid place-items-center">
@@ -106,7 +119,10 @@ export default function Page() {
             <header className="w-full h-16 bg-white border-b">
                 <div className="w m-auto h-full flex items-center justify-between lg:w" style={{"--w": "90%", "--w-lg": "60%"}}>
                     <Link href="/" className="text-lg font-medium">Andes Analytics</Link>
-                    <span className="badge badge--success">Pulso Ciudadano</span>
+                    <div className="flex items-center gap-sm">
+                        <span className="badge badge--success">Pulso Ciudadano</span>
+                        <button type="button" className="btn btn-lg btn-primary" onClick={shareReferral}>Enviar por WhatsApp</button>
+                    </div>
                 </div>
             </header>
 
@@ -114,21 +130,9 @@ export default function Page() {
 
                 <section className="w m-auto py-12 text-center lg:w" style={{"--w": "90%","--w-lg": "60%"}}>
                     <div className="w-full flex flex-col items-center gap-md">
-                        <span className="badge badge-secondary">
-                            Participación ciudadana
-                        </span>
-
-                        <h1 className="text-3xl font-medium leading-tight">
-                            Descubre cuáles son tus
-                            <br />
-                            prioridades para Jauja
-                        </h1>
-
-                        <p className="text-sm text-muted leading-normal">
-                            Responde algunas preguntas y conoce tu perfil
-                            ciudadano. Tus respuestas serán procesadas de
-                            manera anónima y agregada.
-                        </p>
+                        <span className="badge badge-secondary">Participación ciudadana</span>
+                        <h1 className="text-3xl font-medium leading-tight">Descubre cuáles son tus<br />prioridades para Jauja</h1>
+                        <p className="text-sm text-muted leading-normal">Responde algunas preguntas y conoce tu perfil ciudadano. Tus respuestas serán procesadas de manera anónima y agregada.</p>
                     </div>
                 </section>
 
@@ -245,31 +249,8 @@ export default function Page() {
                             </div>
 
                             <div className="w-full flex justify-between gap-md">
-                                <button
-                                    type="button"
-                                    className="btn btn-lg btn-secondary"
-                                    onClick={prevStep}
-                                    disabled={
-                                        step === 0 ||
-                                        loading
-                                    }
-                                >
-                                    Volver
-                                </button>
-
-                                <button
-                                    type="button"
-                                    className="btn btn-lg btn-primary"
-                                    onClick={nextStep}
-                                    disabled={loading}
-                                >
-                                    {loading
-                                        ? "Procesando..."
-                                        : step ===
-                                          questions.length - 1
-                                            ? "Ver resultado"
-                                            : "Continuar"}
-                                </button>
+                                <button type="button" className="btn btn-lg btn-secondary" onClick={prevStep} disabled={step === 0 || loading}>Volver</button>
+                                <button type="button" className="btn btn-lg btn-primary" onClick={nextStep} disabled={loading}>{loading ? "Procesando..." : step === questions.length - 1 ? "Ver resultado" : "Continuar"}</button>
                             </div>
 
                         </div>

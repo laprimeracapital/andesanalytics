@@ -57,6 +57,15 @@ export function getSessionId() {
     return storedSession;
 }
 
+export function createReferralCode(length = 8) {
+    const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+
+    return Array.from(
+        { length },
+        () => chars[Math.floor(Math.random() * chars.length)]
+    ).join("");
+}
+
 export function getCampaignParams() {
     if (typeof window === "undefined") return {};
 

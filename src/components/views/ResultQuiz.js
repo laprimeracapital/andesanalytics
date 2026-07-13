@@ -1,13 +1,31 @@
+'use client'
 import { topicLabels } from "@/helpers/quiz.helper";
 import Link from "next/link";
 
 export default function ResultQuiz ({ citizenProfile, affinityResult, restartQuiz, feedbackLoading, handleFeedback }) {
+    
+    const shareReferral = async () => {
+        const url =
+            `${window.location.origin}/pulso-ciudadano` +
+            `?ref=${affinityResult.referral_code}` +
+            `&utm_source=whatsapp` +
+            `&utm_medium=referral` +
+            `&utm_campaign=pulso_ciudadano`;
+
+        const text = "Participa en Pulso Ciudadano Jauja y descubre qué planes de gobierno se acercan más a tus prioridades.";
+
+        window.open(`https://wa.me/?text=${encodeURIComponent(`${text}\n\n${url}`)}`, "_blank");
+    };
+
     return (
         <>
             <header className="w-full h-16 bg-white border-b">
                 <div className="w m-auto h-full flex items-center justify-between lg:w" style={{"--w": "90%", "--w-lg": "60%"}}>
                     <Link href="/" className="text-lg font-medium">Andes Analytics</Link>
-                    <span className="badge badge--success">Pulso Ciudadano</span>
+                    <div className="flex gap-sm">
+                        <span className="badge badge--success">Pulso Ciudadano</span>
+                        <button>Compartir por WhatsApp</button>
+                    </div>
                 </div>
             </header>
 
@@ -17,12 +35,7 @@ export default function ResultQuiz ({ citizenProfile, affinityResult, restartQui
                             <div className="text-center">
                                 <span className="badge badge-primary">Resultado</span>
                                 <h1 className="text-3xl font-medium mt-4">Tu perfil ciudadano</h1>
-                                <p className="text-sm text-muted mt-3">
-                                    Este resultado refleja afinidad
-                                    programática con planes de gobierno
-                                    oficiales. No constituye una recomendación
-                                    de voto.
-                                </p>
+                                <p className="text-sm text-muted mt-3">Este resultado refleja afinidad programática con planes de gobierno oficiales. No constituye una recomendación de voto.</p>
                             </div>
 
                             <div className="card text-center">
@@ -120,6 +133,7 @@ export default function ResultQuiz ({ citizenProfile, affinityResult, restartQui
                             </div>
 
                             <div className="w-full flex flex-col gap-sm md:flex-row md:justify-center">
+                                <button type="button" className="btn btn-lg btn-secondary" onClick={shareReferral}> Compartir por WhatsAPP</button>
                                 <button type="button" className="btn btn-lg btn-secondary" onClick={restartQuiz}> Responder nuevamente</button>
                                 <Link href="/" className="btn btn-lg btn-primary">Volver al observatorio</Link>
                             </div>
