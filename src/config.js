@@ -5,3 +5,4 @@ export const SUPABASE = {
 }
 
 export const ENV = process.env.NEXT_PUBLIC_NODE_ENV
+export const META_PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID || "1733728774636955";

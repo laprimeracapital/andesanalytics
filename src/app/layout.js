@@ -3,6 +3,10 @@ import '@/assets/global.css'
 import { DBProvider } from "@/context/DBContext";
 import { Toaster } from "sonner";
 import AnalyticsTracker from "@/context/AnalyticsTracker";
+import Script from "next/script";
+import { Suspense } from "react";
+import MetaPixelPageView from "@/context/MetaPixelPageView";
+import { META_PIXEL_ID } from "@/config";
 
 const poppins = Poppins({
     weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
@@ -159,6 +163,56 @@ export default function RootLayout ({ children }) {
         <html lang="es" className={`${poppins.variable}`} data-scroll-behavior="smooth">
             <body>
                 <script type="application/ld+json" dangerouslySetInnerHTML={{__html: JSON.stringify(jsonLd)}}/>
+                <Script id="meta-pixel" strategy="afterInteractive">
+                    {`
+                        !function(f,b,e,v,n,t,s)
+                        {
+                            if(f.fbq)return;
+
+                            n=f.fbq=function(){
+                                n.callMethod
+                                    ? n.callMethod.apply(n,arguments)
+                                    : n.queue.push(arguments)
+                            };
+
+                            if(!f._fbq)f._fbq=n;
+
+                            n.push=n;
+                            n.loaded=!0;
+                            n.version='2.0';
+                            n.queue=[];
+
+                            t=b.createElement(e);
+                            t.async=!0;
+                            t.src=v;
+
+                            s=b.getElementsByTagName(e)[0];
+                            s.parentNode.insertBefore(t,s);
+                        }(
+                            window,
+                            document,
+                            'script',
+                            'https://connect.facebook.net/en_US/fbevents.js'
+                        );
+
+                        fbq(
+                            'init',
+                            ${JSON.stringify(META_PIXEL_ID)}
+                        );
+
+                        fbq('track', 'PageView');
+
+                        window.__META_PIXEL_LAST_URL__ =
+                            window.location.pathname +
+                            window.location.search;
+                    `}
+                </Script>
+                <noscript>
+                    <img height="1" width="1" style={{ display: "none" }} src={`https://www.facebook.com/tr?id=${META_PIXEL_ID}&ev=PageView&noscript=1`} alt=""/>
+                </noscript>
+                <Suspense fallback={null}>
+                    <MetaPixelPageView />
+                </Suspense>
                 <AnalyticsTracker/>
                 <DBProvider>
                     {children}
