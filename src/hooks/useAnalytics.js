@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
-import { getCampaignParams, getDeviceData, getSessionId, getVisitorId } from "@/helpers/analytics.helper";
+import { getCampaignParams, getDeviceData, getSessionId, getVisitorId, isInternalUser } from "@/helpers/analytics.helper";
 import { registerAnalyticsSession, trackEvent } from "@/services/analytics.service";
 import { ENV } from "@/config";
 
@@ -16,6 +16,10 @@ const shouldTrack = pathname => {
     if (!pathname) return false;
 
     if (ENV !== "production") {
+        return false;
+    }
+
+    if (isInternalUser()) {
         return false;
     }
 

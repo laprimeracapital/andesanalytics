@@ -4,6 +4,8 @@ const SESSION_TIME_KEY = "andes_session_time";
 
 const SESSION_DURATION = 30 * 60 * 1000;
 
+const INTERNAL_USER_KEY = "andes_internal_user";
+
 function createUUID() {
     if (typeof crypto !== "undefined" && crypto.randomUUID) {
         return crypto.randomUUID();
@@ -141,4 +143,22 @@ export function getDeviceData() {
         screenWidth: window.screen.width,
         screenHeight: window.screen.height
     };
+}
+
+export function isInternalUser() {
+    if (typeof window === "undefined") return false;
+
+    return localStorage.getItem(INTERNAL_USER_KEY) === "true";
+}
+
+export function enableInternalUser() {
+    if (typeof window === "undefined") return;
+
+    localStorage.setItem(INTERNAL_USER_KEY, "true");
+}
+
+export function disableInternalUser() {
+    if (typeof window === "undefined") return;
+
+    localStorage.removeItem(INTERNAL_USER_KEY);
 }
