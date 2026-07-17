@@ -10,6 +10,7 @@ export async function getTransparencyData() {
             logo,
             color,
             work_plan,
+            is_active,
             electoral_candidates (
                 candidate_number,
                 full_name,
@@ -21,10 +22,11 @@ export async function getTransparencyData() {
                 native_candidate
             )
         `)
+        .eq('is_active', true)
         .order("organization_name")
         .order("candidate_number", {
             foreignTable: "electoral_candidates"
-        });
+        })
 
     if(error) throw error;
 

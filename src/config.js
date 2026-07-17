@@ -6,3 +6,4 @@ export const SUPABASE = {
 
 export const ENV = process.env.NEXT_PUBLIC_NODE_ENV
 export const META_PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID || "1733728774636955";
+export const VOTING_SALT = process.env.NEXT_PUBLIC_VOTING_SALT || "eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJqb2.tkbWlg2MDI4OTYsImV4cCI6MjA5NDE3ODg5Nn0.vj8aFwWTkFK"

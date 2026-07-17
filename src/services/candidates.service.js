@@ -18,6 +18,7 @@ export async function getCandidates() {
             work_plan,
             candidate_image,
             list_image,
+            is_active,
             electoral_candidates (
                 id_candidate,
                 id_hoja_vida,
@@ -34,6 +35,7 @@ export async function getCandidates() {
                 resume_guid
             )
         `)
+        .eq("is_active", true)
         .eq("electoral_year", 2026)
         .eq("election_scope", "PROVINCIAL")
         .eq("postulates_region", "JUNIN")
@@ -83,4 +85,20 @@ export async function getLists() {
     if(error) throw error;
 
     return data;
+}
+
+export async function getElectoralSummary() {
+    const { data, error } = await db.rpc("get_electoral_summary");
+
+    if (error) {
+        console.error("Error obteniendo resumen electoral:", error);
+        throw error;
+    }
+
+    return data?.[0] ?? {
+        total_lists: 0,
+        total_candidates: 0,
+        total_plans: 0,
+        total_districts: 34
+    };
 }

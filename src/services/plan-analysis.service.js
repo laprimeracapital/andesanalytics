@@ -9,8 +9,14 @@ export async function getPlanAnalysisRanking() {
             candidate_name,
             political_organization,
             general_score,
-            summary
+            summary,
+            electoral_lists!inner (
+                id_list,
+                political_organization,
+                is_active
+            )
         `)
+        .eq("electoral_lists.is_active", true)
         .order("general_score", {
             ascending: false
         });
@@ -21,4 +27,23 @@ export async function getPlanAnalysisRanking() {
     }
 
     return data ?? [];
+}
+
+export async function getPlanComparation() {
+
+    const { data, error } = await db
+        .from("electoral_plan_analysis")
+        .select(`
+            *,
+            electoral_lists(
+                id_list,
+                political_organization,
+                is_active
+            )
+        `)
+        .eq("electoral_lists.is_active", true);
+
+    if (error) throw error;
+
+    return data;
 }

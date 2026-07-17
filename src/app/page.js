@@ -3,7 +3,6 @@
 import CandidateCard from "@/components/Cards/CandidateCard";
 import { useDB } from "@/context/DBContext";
 import Link from "next/link";
-import { electoralSummary } from "@/helpers/panel";
 import { metodologia } from "@/db/db";
 import TablePadron from "@/components/Tables/TablePadron";
 import TableComparation from "@/components/Tables/TableComparation";
@@ -11,7 +10,26 @@ import CardPlanRanking from "@/components/Cards/CardPlanRanking";
 
 export default function Page() {
 
-    const { candidates = [] } = useDB();
+    const { candidates = [], summary } = useDB();
+
+    const electoralSummary = [
+        {
+            label: "Listas provinciales",
+            value: summary?.total_lists ?? "-"
+        },
+        {
+            label: "Candidatos registrados",
+            value: summary?.total_candidates ?? "-"
+        },
+        {
+            label: "Planes analizados",
+            value: summary?.total_plans ?? "-"
+        },
+        {
+            label: "Distritos evaluados",
+            value: summary?.total_districts ?? "-"
+        }
+    ];
 
     return (
         <>
@@ -113,8 +131,20 @@ export default function Page() {
                     </div>
                 </section>
 
-                <section className="w m-auto py-16 lg:w" id="electorado" style={{"--w": "90%", "--w-lg": "60%"}}>
-                    <div className="w-full flex flex-col gap-lg">
+                <section className="none w-full py-16" id="preferencia-electoral" style={{"display": "none"}}>
+                    <div className="text-center">
+                        <p className="label text-primary">Sondeo abierto</p>
+                        <h2 className="text-2xl mt-2">Si las elecciones fueran hoy, <br/>¿por quién votarías?</h2>
+                        <p className="text-sm text-muted mt-3">
+                            Resultados entre participantes voluntarios de Pulso Ciudadano.
+                            No constituyen una encuesta probabilística ni representan al
+                            conjunto del electorado de Jauja.
+                        </p>
+                    </div>
+                </section>
+
+                <section className="w-full py-16" id="electorado">
+                    <div className="w m-auto flex flex-col gap-lg lg:w" style={{"--w": "90%", "--w-lg": "60%"}}>
                         <div className="text-center">
                             <p className="label text-primary">Padrón electoral</p>
                             <h2 className="text-2xl mt-2">Radiografía del electorado de Jauja</h2>
