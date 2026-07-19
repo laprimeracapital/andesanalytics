@@ -170,9 +170,13 @@
 }
 
 .btn--icon {
+    display: grid;
+    place-items: center;
     width: var(--button-height);
     padding-inline: var(--space-0);
+    border-radius: var(--radius-full);
     aspect-ratio: var(--aspect-square);
+    background-color: var(--color-surface-secondary);
 }
 
 .btn--icon.btn--sm {

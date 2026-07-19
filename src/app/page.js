@@ -7,10 +7,13 @@ import { metodologia } from "@/db/db";
 import TablePadron from "@/components/Tables/TablePadron";
 import TableComparation from "@/components/Tables/TableComparation";
 import CardPlanRanking from "@/components/Cards/CardPlanRanking";
+import CardCandidateRanking from "@/components/Cards/CardCandidateRanking";
+import CardIntegralRanking from "@/components/Cards/CardIntegralRanking";
+import Header from "@/components/layout/header";
 
 export default function Page() {
 
-    const { candidates = [], summary } = useDB();
+    const { candidates = [], summary, candidateRanking = [], integralRanking = [] } = useDB();
 
     const electoralSummary = [
         {
@@ -33,12 +36,7 @@ export default function Page() {
 
     return (
         <>
-            <header className="w-full h-16 bg-white border-b">
-                <div className="w m-auto flex items-center justify-between h-full lg:w" style={{"--w": "90%", "--w-lg": "60%"}}>
-                    <Link href="/" className="text-lg font-medium">Andes Analytics</Link>
-                    <span className="badge badge-success badge--success">Sistemas activos</span>
-                </div>
-            </header>
+            <Header/>
 
             <main className="w-full">
 
@@ -131,15 +129,39 @@ export default function Page() {
                     </div>
                 </section>
 
-                <section className="none w-full py-16" id="preferencia-electoral" style={{"display": "none"}}>
-                    <div className="text-center">
-                        <p className="label text-primary">Sondeo abierto</p>
-                        <h2 className="text-2xl mt-2">Si las elecciones fueran hoy, <br/>¿por quién votarías?</h2>
-                        <p className="text-sm text-muted mt-3">
-                            Resultados entre participantes voluntarios de Pulso Ciudadano.
-                            No constituyen una encuesta probabilística ni representan al
-                            conjunto del electorado de Jauja.
-                        </p>
+                <section className="w-full py-16" id="candidate-ranking">
+                    <div className="w m-auto lg:w" style={{"--w": "90%", "--w-lg": "60%"}}>
+                        <div className="w-full flex flex-col gap-lg">
+                            <div className="text-center">
+                                <p className="label text-primary">Perfil profesional</p>
+                                <h2 className="text-2xl mt-2">Índice de capacidad profesional de los candidatos</h2>
+                                <p className="text-sm text-muted mt-3">Esta evaluación analiza la trayectoria académica y profesional de cada candidato a partir de la hoja de vida presentada al JNE. Se consideran aspectos como formación, especialización, experiencia en gestión pública, liderazgo, conocimiento territorial y capacidad técnica para el ejercicio del cargo.</p>
+                            </div>
+                            <div className="w-full grid grid-cols-1 gap-md md:grid-cols-2 lg:grid-cols-3">
+                                {candidateRanking.map((item, index) => (
+                                    <CardCandidateRanking key={item.id_candidate_analysis} item={item} position={index + 1} />
+                                ))}
+                            </div>
+                            <p className="text-xs text-muted text-center">El puntaje refleja únicamente la capacidad profesional acreditada documentalmente y no constituye una recomendación de voto.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section className="w-full bg-surface py-16" id="integral-ranking">
+                    <div className="w m-auto lg:w" style={{"--w": "90%", "--w-lg": "60%"}}>
+                        <div className="w-full flex flex-col gap-lg">
+                            <div className="text-center">
+                                <p className="label text-primary">Inteligencia electoral</p>
+                                <h2 className="text-2xl mt-2">Índice Integral de Gobernabilidad</h2>
+                                <p className="text-sm text-muted mt-3">Este índice integra la evaluación técnica del plan de gobierno con el análisis de la hoja de vida del candidato, midiendo la correspondencia entre las propuestas planteadas y la capacidad demostrada para ejecutarlas de manera eficiente.</p>
+                            </div>
+                            <div className="w-full grid grid-cols-1 gap-md md:grid-cols-2 lg:grid-cols-3">
+                                {integralRanking.map((item, index) => (
+                                    <CardIntegralRanking key={item.id_integral_analysis} item={item} position={index + 1} />
+                                ))}
+                            </div>
+                            <p className="text-xs text-muted text-center">El Índice Integral de Gobernabilidad es una evaluación técnica basada en información oficial y criterios documentales. No representa intención de voto ni predice resultados electorales.</p>
+                        </div>
                     </div>
                 </section>
 

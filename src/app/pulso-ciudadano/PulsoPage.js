@@ -9,6 +9,7 @@ import { calculateCitizenProfile } from "@/helpers/quiz.helper";
 import { toast } from "sonner";
 import { useQuiz } from "@/hooks/useQuiz";
 import ResultQuiz from "@/components/views/ResultQuiz";
+import Header from "@/components/layout/header";
 
 export default function Page() {
 
@@ -86,19 +87,6 @@ export default function Page() {
         setFinished(false);
     };
 
-    const shareReferral = async () => {
-        const url =
-            `${window.location.origin}/pulso-ciudadano` +
-            `?ref=${affinityResult.referral_code}` +
-            `&utm_source=whatsapp` +
-            `&utm_medium=referral` +
-            `&utm_campaign=pulso_ciudadano`;
-
-        const text = "Participa en Pulso Ciudadano Jauja y descubre qué planes de gobierno se acercan más a tus prioridades.";
-
-        window.open(`https://wa.me/?text=${encodeURIComponent(`${text}\n\n${url}`)}`, "_blank");
-    };
-
     if (!questions.length) {
         return (
             <main className="w-full min-h-screen grid place-items-center">
@@ -116,15 +104,7 @@ export default function Page() {
 
     return (
         <>
-            <header className="w-full h-16 bg-white border-b">
-                <div className="w m-auto h-full flex items-center justify-between lg:w" style={{"--w": "90%", "--w-lg": "60%"}}>
-                    <Link href="/" className="text-lg font-medium">Andes Analytics</Link>
-                    <div className="flex items-center gap-sm">
-                        <span className="badge badge--success">Pulso Ciudadano</span>
-                        <button type="button" className="btn btn-lg btn-primary" onClick={shareReferral}>Enviar por WhatsApp</button>
-                    </div>
-                </div>
-            </header>
+            <Header/>
 
             <main className="w-full">
 

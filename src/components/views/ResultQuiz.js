@@ -1,6 +1,7 @@
 'use client'
 import { topicLabels } from "@/helpers/quiz.helper";
 import Link from "next/link";
+import Header from "../layout/header";
 
 export default function ResultQuiz ({ citizenProfile, affinityResult, restartQuiz, feedbackLoading, handleFeedback }) {
     
@@ -19,15 +20,7 @@ export default function ResultQuiz ({ citizenProfile, affinityResult, restartQui
 
     return (
         <>
-            <header className="w-full h-16 bg-white border-b">
-                <div className="w m-auto h-full flex items-center justify-between lg:w" style={{"--w": "90%", "--w-lg": "60%"}}>
-                    <Link href="/" className="text-lg font-medium">Andes Analytics</Link>
-                    <div className="flex gap-sm">
-                        <span className="badge badge--success">Pulso Ciudadano</span>
-                        <button>Compartir por WhatsApp</button>
-                    </div>
-                </div>
-            </header>
+            <Header/>
 
             <main className="w-full">
                 <section className="w m-auto py-16 lg:w" style={{"--w": "90%", "--w-lg": "60%"}}>
@@ -134,7 +127,6 @@ export default function ResultQuiz ({ citizenProfile, affinityResult, restartQui
 
                             <div className="w-full flex flex-col gap-sm md:flex-row md:justify-center">
                                 <button type="button" className="btn btn-lg btn-secondary" onClick={shareReferral}> Compartir por WhatsAPP</button>
-                                <button type="button" className="btn btn-lg btn-secondary" onClick={restartQuiz}> Responder nuevamente</button>
                                 <Link href="/" className="btn btn-lg btn-primary">Volver al observatorio</Link>
                             </div>
                         </div>

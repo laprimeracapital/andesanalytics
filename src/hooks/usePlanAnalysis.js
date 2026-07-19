@@ -1,78 +1,98 @@
 'use client';
 
-import { getPlanAnalysisRanking, getPlanComparation} from "@/services/plan-analysis.service";
-import { useCallback, useEffect, useState} from "react";
+import { getPlanAnalysisRanking, getPlanComparation, getCandidateIntegral, getCandidateRanking } from '@/services/plan-analysis.service';
+import { useCallback, useEffect, useState } from 'react';
 
-export const usePlanAnalysis = () => {
+const EMPTY_LIST = [];
 
-    const [planRanking, setPlanRanking] = useState([]);
-    const [loadingPlanRanking, setLoadingPlanRanking] = useState(false);
-    const [errorPlanRanking, setErrorPlanRanking] = useState(null);
+const normalizeList = (value) => (
+    Array.isArray(value) ? value : EMPTY_LIST
+);
 
-    const [proposals, setProposals] = useState([]);
-    const [loadingProposals, setLoadingProposals] = useState(false);
-    const [errorProposals, setErrorProposals] = useState(null);
+const useAsyncList = (fetcher, errorMessage) => {
+    const [state, setState] = useState({
+        data: EMPTY_LIST,
+        loading: false,
+        error: null,
+    });
 
-    const loadPlanRanking = useCallback(async () => {
+    const refresh = useCallback(async () => {
+        setState((currentState) => ({
+            ...currentState,
+            loading: true,
+            error: null,
+        }));
+
         try {
-            setLoadingPlanRanking(true);
-            setErrorPlanRanking(null);
+            const response = await fetcher();
+            const data = normalizeList(response);
 
-            const data = await getPlanAnalysisRanking();
-            console.log(data);
-            
-            setPlanRanking(Array.isArray(data) ? data : []);
+            setState({
+                data,
+                loading: false,
+                error: null,
+            });
 
-            return Array.isArray(data) ? data : [];
+            return data;
         } catch (error) {
-            console.error(
-                "Error cargando ranking de planes:",
-                error
-            );
+            console.error(errorMessage, error);
 
-            setErrorPlanRanking(error);
-            setPlanRanking([]);
+            setState({
+                data: EMPTY_LIST,
+                loading: false,
+                error,
+            });
 
-            return [];
-        } finally {
-            setLoadingPlanRanking(false);
+            return EMPTY_LIST;
         }
-    }, []);
-
-    const loadComparationProposals = useCallback(async () => {
-        try {
-            setLoadingProposals(true);
-            setErrorProposals(null);
-
-            const data = await getPlanComparation();
-
-            setProposals(Array.isArray(data) ? data : []);
-
-            return Array.isArray(data) ? data : [];
-        } catch (error) {
-            console.error("Error cargando propuestas para comparación:", error);
-            setErrorProposals(error);
-            setProposals([]);
-            return [];
-        } finally {
-            setLoadingProposals(false);
-        }
-    }, []);
+    }, [fetcher, errorMessage]);
 
     useEffect(() => {
-        loadPlanRanking();
-        loadComparationProposals();
-    }, [loadPlanRanking, loadComparationProposals]);
+        void refresh();
+    }, [refresh]);
 
     return {
-        planRanking,
-        loadingPlanRanking,
-        errorPlanRanking,
-        refreshPlanRanking: loadPlanRanking,
+        ...state,
+        refresh,
+    };
+};
 
-        proposals,
-        loadingProposals,
-        errorProposals,
-        refreshProposals: loadComparationProposals
+export const usePlanAnalysis = () => {
+    
+    const ranking = useAsyncList(getPlanAnalysisRanking, 'Error cargando ranking de planes:');
+    const comparisonProposals = useAsyncList(getPlanComparation, 'Error cargando propuestas para comparación:');
+    const candidateRanking = useAsyncList(getCandidateRanking, 'Error cargando el ranking de candidatos:');
+    const integralRanking = useAsyncList(getCandidateIntegral, 'Error cargando ranking integral:')
+
+
+    return {
+        planRanking: ranking.data,
+        loadingPlanRanking: ranking.loading,
+        errorPlanRanking: ranking.error,
+        refreshPlanRanking: ranking.refresh,
+
+        proposals: comparisonProposals.data,
+        loadingProposals: comparisonProposals.loading,
+        errorProposals: comparisonProposals.error,
+        refreshProposals: comparisonProposals.refresh,
+
+        candidateRanking: candidateRanking.data,
+        loadingRanking: candidateRanking.loading,
+        errorRanking: candidateRanking.error,
+        refreshRanking: candidateRanking.refresh,
+
+        integralRanking: integralRanking.data,
+        loadingIntegralRanking: integralRanking.loading,
+        errorIntegralRanking: integralRanking.error,
+        refreshIntegralRanking: integralRanking.refresh,
+
+        loading: ranking.loading || comparisonProposals.loading || candidateRanking.loading || integralRanking.loading,
+
+        hasError: Boolean(
+            ranking.error ||
+            comparisonProposals.error ||
+            candidateRanking.error ||
+            integralRanking.error
+        ),
     };
 };

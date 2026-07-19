@@ -29,6 +29,7 @@ const shouldTrack = pathname => {
 };
 
 export function useAnalytics() {
+    
     const pathname = usePathname();
     const initialized = useRef(false);
 

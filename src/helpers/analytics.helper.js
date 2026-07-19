@@ -6,6 +6,8 @@ const SESSION_DURATION = 30 * 60 * 1000;
 
 const INTERNAL_USER_KEY = "andes_internal_user";
 
+const REFERRAL_STORAGE_KEY = 'andes_referral_code';
+
 function createUUID() {
     if (typeof crypto !== "undefined" && crypto.randomUUID) {
         return crypto.randomUUID();
@@ -59,13 +61,22 @@ export function getSessionId() {
     return storedSession;
 }
 
-export function createReferralCode(length = 8) {
-    const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+export function getReferralCode(length = 8) {
 
-    return Array.from(
-        { length },
-        () => chars[Math.floor(Math.random() * chars.length)]
-    ).join("");
+    const storedReferralCode = localStorage.getItem( REFERRAL_STORAGE_KEY );
+
+    if (!storedReferralCode) {
+        const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+        const code = Array.from(
+            { length },
+            () => chars[Math.floor(Math.random() * chars.length)]
+        ).join("");
+        localStorage.setItem( REFERRAL_STORAGE_KEY, code);
+        return code;
+    }
+
+    return storedReferralCode
+
 }
 
 export function getCampaignParams() {

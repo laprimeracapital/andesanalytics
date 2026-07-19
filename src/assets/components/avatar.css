@@ -1,0 +1,15 @@
+.avatar {
+    display: grid;
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    place-items: center;
+    border-radius: var(--radius-full);
+    background-color: var(--color-surface-secondary);
+}
+
+.avatar-lg {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+}

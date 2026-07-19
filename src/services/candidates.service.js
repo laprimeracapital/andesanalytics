@@ -5,6 +5,7 @@ export async function getCandidates() {
         .from("electoral_lists")
         .select(`
             id_list,
+            slug,
             political_organization_id,
             political_organization,
             electoral_year,

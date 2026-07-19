@@ -4,7 +4,7 @@ import { useState } from "react";
 import { getPlanAnalysisForAffinity, saveCitizenAnswer, saveCitizenFeedback } from "@/services/citizen-pulse.service";
 import { calculateAffinity } from "@/helpers/calculate-affinity.helper";
 import { createCitizenSession, getVisitorId, saveLastCitizenResult } from "@/helpers/citizen-session.helper";
-import { createReferralCode } from "@/helpers/analytics.helper";
+import { getReferralCode } from "@/helpers/analytics.helper";
 
 export const useCitizenPulse = () => {
     const [result, setResult] = useState(null);
@@ -21,7 +21,7 @@ export const useCitizenPulse = () => {
 
             const visitorId = getVisitorId();
             const sessionId = createCitizenSession();
-            const referralCode = createReferralCode();
+            const referralCode = getReferralCode();
 
             const referredBy = sessionStorage.getItem("andes_referred_by");
 

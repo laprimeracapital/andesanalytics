@@ -47,3 +47,42 @@ export async function getPlanComparation() {
 
     return data;
 }
+
+export async function getCandidateRanking() {
+    try {
+        const { data, error } = await db
+            .from('electoral_candidate_analysis')
+            .select(`
+                *,
+                electoral_lists (
+                    candidate_image
+                )
+            `)
+            .order('general_score', { ascending: false });
+
+        if (error) throw new Error(error.message || "Hubo un error al consultar");
+            return data;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+export async function getCandidateIntegral() {
+    try {
+        const { data, error } = await db
+            .from('electoral_integral_analysis')
+            .select(`
+                *,
+                electoral_lists (
+                    candidate_image
+                )
+            `)
+            .order('integral_score', { ascending: false });
+        
+        if (error) throw new Error(error.message || "Hubo un error al consultar");
+            console.log(data);
+            return data;
+    } catch (error) {
+        console.error(error);
+    }
+}
