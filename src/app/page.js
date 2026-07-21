@@ -10,6 +10,8 @@ import CardPlanRanking from "@/components/Cards/CardPlanRanking";
 import CardCandidateRanking from "@/components/Cards/CardCandidateRanking";
 import CardIntegralRanking from "@/components/Cards/CardIntegralRanking";
 import Header from "@/components/layout/header";
+import Footer from "@/components/layout/footer";
+import CandidateReviewSection from "@/components/Sections/CandidateReviewSection";
 
 export default function Page() {
 
@@ -176,7 +178,9 @@ export default function Page() {
                     </div>
                 </section>
 
-                <section className="w-full bg-surface py-16" id="metodologia">
+                <CandidateReviewSection/>
+
+                <section className="w-full py-16" id="metodologia">
                     <div className="w m-auto lg:w" style={{"--w": "90%","--w-lg": "60%" }}>
                         <div className="w-full grid grid-cols-1 gap-lg lg:grid-cols-2">
                             <div className="flex flex-col gap-md">
@@ -206,22 +210,24 @@ export default function Page() {
                     </div>
                 </section>
 
-                <section className="w m-auto py-16 lg:w" id="fuentes" style={{"--w": "90%","--w-lg": "60%"}}>
-                    <div className="card text-center">
-                        <div className="w-full flex flex-col items-center gap-md">
-                            <span className="badge badge-success">Datos verificados</span>
-                            <h2 className="text-2xl">Fuentes oficiales y datos abiertos</h2>
-                            <p className="text-sm text-muted leading-normal">
-                                Los datos publicados provienen de documentos
-                                oficiales, padrón electoral y planes de gobierno
-                                presentados por las organizaciones políticas.
-                            </p>
-                            <div className="flex flex-wrap justify-center gap-sm">
-                                {["JNE","ONPE","RENIEC","Planes oficiales","Padrón electoral"].map(source => (
-                                    <span key={source}className="badge badge-outline">{source}</span>
-                                ))}
+                <section className="w-full m-auto bg-surface py-16" id="fuentes">
+                    <div className="w m-auto lg:w" style={{"--w": "90%","--w-lg": "60%"}}>
+                        <div className="card text-center">
+                            <div className="w-full flex flex-col items-center gap-md">
+                                <span className="badge badge-success">Datos verificados</span>
+                                <h2 className="text-2xl">Fuentes oficiales y datos abiertos</h2>
+                                <p className="text-sm text-muted leading-normal">
+                                    Los datos publicados provienen de documentos
+                                    oficiales, padrón electoral y planes de gobierno
+                                    presentados por las organizaciones políticas.
+                                </p>
+                                <div className="flex flex-wrap justify-center gap-sm">
+                                    {["JNE","ONPE","RENIEC","Planes oficiales","Padrón electoral"].map(source => (
+                                        <span key={source}className="badge badge-outline">{source}</span>
+                                    ))}
+                                </div>
+                                <p className="text-xs text-muted">Última actualización: julio de 2026</p>
                             </div>
-                            <p className="text-xs text-muted">Última actualización: julio de 2026</p>
                         </div>
                     </div>
                 </section>
@@ -242,20 +248,7 @@ export default function Page() {
 
             </main>
 
-            <footer className="w-full bg-white border-t py-8">
-                <div className="w m-auto flex flex-col gap-md text-center md:flex-row md:justify-between md:text-left lg:w" style={{"--w": "90%", "--w-lg": "60%"}}>
-                    <div>
-                        <p className="text-xl font-medium">Andes Analytics</p>
-                        <p className="text-xs text-muted mt-1">Información electoral para una decisión ciudadana informada. </p>
-                    </div>
-
-                    <div className="flex justify-center gap-md">
-                        <Link href="/metodologia" className="text-xs text-muted">Metodología</Link>
-                        <Link href="/privacidad" className="text-xs text-muted">Privacidad</Link>
-                        <Link href="/fuentes" className="text-xs text-muted">Fuentes</Link>
-                    </div>
-                </div>
-            </footer>
+            <Footer/>
         </>
     );
 }

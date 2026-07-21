@@ -27,6 +27,8 @@ function Metric({ label, value }) {
 }
 
 export default function CardIntegralRanking({ item, position }) {
+
+    console.log(item);
     
     const integralScore = Number(item?.integral_score ?? 0);
     const candidateImage = item?.candidate_image || item?.electoral_lists?.candidate_image || null;
@@ -51,113 +53,55 @@ export default function CardIntegralRanking({ item, position }) {
 
                     <div className="min-w-0">
                         {position && (
-                            <p className="text-xs text-primary font-medium">
-                                Puesto #{position}
-                            </p>
+                            <p className="text-xs text-primary font-medium">Puesto #{position}</p>
                         )}
-
-                        <h3 className="text-md font-medium truncate">
-                            {item?.candidate_name}
-                        </h3>
-
-                        <p className="text-xs text-muted mt-1 truncate">
-                            {item?.political_organization}
-                        </p>
+                        <h3 className="text-md font-medium truncate">{item?.candidate_name}</h3>
+                        <p className="text-xs text-muted mt-1 truncate">{item?.political_organization}</p>
                     </div>
                 </div>
 
                 <div className="text-right shrink-0">
-                    <p className="text-4xl font-semibold">
-                        {integralScore.toFixed(0)}
-                    </p>
-
-                    <p className="text-xs text-muted">
-                        Índice integral
-                    </p>
+                    <p className="text-4xl font-semibold">{integralScore.toFixed(0)}</p>
+                    <p className="text-xs text-muted">Índice integral</p>
                 </div>
             </div>
 
             <div className="w-full flex items-center justify-between">
-                <span className="badge badge-success">
-                    {getScoreLabel(integralScore)}
-                </span>
-
-                <span className="text-xs text-muted">
-                    Escala de 0 a 100
-                </span>
+                <span className="badge badge-success">{getScoreLabel(integralScore)}</span>
+                <span className="text-xs text-muted">Escala de 0 a 100</span>
             </div>
 
             <div className="w-full grid grid-cols-3 gap-sm">
                 <div className="card card-compact text-center">
-                    <p className="text-xl font-semibold">
-                        {Number(item?.plan_score ?? 0).toFixed(0)}
-                    </p>
-
-                    <p className="text-xs text-muted mt-1">
-                        Plan
-                    </p>
+                    <p className="text-xl font-semibold">{Number(item?.plan_score ?? 0).toFixed(0)}</p>
+                    <p className="text-xs text-muted mt-1">Plan</p>
                 </div>
 
                 <div className="card card-compact text-center">
-                    <p className="text-xl font-semibold">
-                        {Number(item?.candidate_profile_score ?? 0).toFixed(0)}
-                    </p>
-
-                    <p className="text-xs text-muted mt-1">
-                        Hoja de vida
-                    </p>
+                    <p className="text-xl font-semibold">{Number(item?.candidate_profile_score ?? 0).toFixed(0)}</p>
+                    <p className="text-xs text-muted mt-1">Hoja de vida</p>
                 </div>
 
                 <div className="card card-compact text-center">
-                    <p className="text-xl font-semibold">
-                        {Number(item?.plan_execution_alignment_score ?? 0).toFixed(0)}
-                    </p>
-
-                    <p className="text-xs text-muted mt-1">
-                        Correspondencia
-                    </p>
+                    <p className="text-xl font-semibold">{Number(item?.plan_execution_alignment_score ?? 0).toFixed(0)}</p>
+                    <p className="text-xs text-muted mt-1">Correspondencia</p>
                 </div>
             </div>
 
             <div className="w-full flex flex-col gap-sm">
-                <Metric
-                    label="Gobernabilidad"
-                    value={item?.governance_score}
-                />
-
-                <Metric
-                    label="Capacidad de ejecución"
-                    value={item?.execution_score}
-                />
-
-                <Metric
-                    label="Consistencia técnica"
-                    value={item?.technical_consistency_score}
-                />
-
-                <Metric
-                    label="Respuesta territorial"
-                    value={item?.territorial_response_score}
-                />
-
-                <Metric
-                    label="Comunicación estratégica"
-                    value={item?.strategic_communication_score}
-                />
+                <Metric label="Gobernabilidad" value={item?.governance_score}/>
+                <Metric label="Capacidad de ejecución" value={item?.execution_score}/>
+                <Metric label="Consistencia técnica" value={item?.technical_consistency_score}/>
+                <Metric label="Respuesta territorial" value={item?.territorial_response_score}/>
+                <Metric label="Comunicación estratégica" value={item?.strategic_communication_score}/>
             </div>
 
             {item?.integral_summary && (
-                <p className="text-xs text-muted leading-normal line-clamp-3">
-                    {item.integral_summary}
-                </p>
+                <p className="text-xs text-muted leading-normal line-clamp-3">{item.integral_summary}</p>
             )}
 
-            <Link
-                href={`/candidatos/${item?.id_candidate}`}
-                className="btn btn-primary btn-md w-full"
-            >
-                Ver evaluación integral
-            </Link>
+            <Link href={`/candidates/${item?.electoral_lists.slug}`} className="btn btn-primary btn-md w-full">Ver evaluación integral</Link>
+            <p className='text-xs italic text-muted'>* Evaluación constante</p>
         </article>
     );
 }

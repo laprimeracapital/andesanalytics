@@ -72,35 +72,12 @@ export default function CardCandidateRanking({ item, position }) {
             </div>
 
             <div className="w-full flex flex-col gap-sm">
-                <ScoreRow
-                    label="Formación académica"
-                    value={item?.academic_training_score}
-                />
-
-                <ScoreRow
-                    label="Especialización"
-                    value={item?.specialization_score}
-                />
-
-                <ScoreRow
-                    label="Gestión pública"
-                    value={item?.public_management_score}
-                />
-
-                <ScoreRow
-                    label="Experiencia ejecutiva"
-                    value={item?.executive_experience_score}
-                />
-
-                <ScoreRow
-                    label="Conocimiento territorial"
-                    value={item?.territorial_knowledge_score}
-                />
-
-                <ScoreRow
-                    label="Liderazgo"
-                    value={item?.leadership_score}
-                />
+                <ScoreRow label="Formación académica" value={item?.academic_training_score}/>
+                <ScoreRow label="Especialización" value={item?.specialization_score}/>
+                <ScoreRow label="Gestión pública" value={item?.public_management_score}/>
+                <ScoreRow label="Experiencia ejecutiva" value={item?.executive_experience_score}/>
+                <ScoreRow label="Conocimiento territorial" value={item?.territorial_knowledge_score}/>
+                <ScoreRow label="Liderazgo" value={item?.leadership_score}/>
             </div>
 
             <div className="w-full border-t pt-md">
@@ -120,7 +97,8 @@ export default function CardCandidateRanking({ item, position }) {
                     )}
                 </div>
             </div>
-            <Link href={`/candidatos/${item?.id_candidate}`} className="btn btn-secondary btn-md w-full">Ver análisis de hoja de vida</Link>
+            <Link href={`/candidates/${item?.electoral_lists.slug}`} className="btn btn-secondary btn-md w-full">Ver análisis de hoja de vida</Link>
+            <p className='text-xs italic text-muted'>* Evaluación constante</p>
         </article>
     );
 }

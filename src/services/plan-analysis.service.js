@@ -55,6 +55,7 @@ export async function getCandidateRanking() {
             .select(`
                 *,
                 electoral_lists (
+                    slug,
                     candidate_image
                 )
             `)
@@ -74,6 +75,7 @@ export async function getCandidateIntegral() {
             .select(`
                 *,
                 electoral_lists (
+                    slug,
                     candidate_image
                 )
             `)
