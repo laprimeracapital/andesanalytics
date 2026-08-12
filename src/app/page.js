@@ -66,7 +66,7 @@ export default function Page() {
                     </div>
                 </section>
 
-                <section className="w m-auto py-12 lg:w" id="resumen" style={{"--w": "90%", "--w-lg": "60%"}}>
+                <section className="w m-auto py-12 lg:w" id="resumen" style={{"--w": "90%", "--w-lg": "70%"}}>
                     <div className="w-full flex flex-col gap-lg">
                         <div className="text-center">
                             <p className="label text-primary">Panorama electoral</p>
@@ -106,7 +106,7 @@ export default function Page() {
                     </div>
                 </section>
 
-                <section className="w m-auto py-16 lg:w" id="comparador" style={{"--w": "90%","--w-lg": "60%"}}>
+                <section className="w m-auto py-16 lg:w" id="comparador" style={{"--w": "90%","--w-lg": "70%"}}>
                     <div className="w-full flex flex-col gap-lg">
                         <div className="text-center">
                             <p className="label text-primary">Comparador</p>

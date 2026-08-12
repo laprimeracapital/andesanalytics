@@ -27,8 +27,6 @@ function Metric({ label, value }) {
 }
 
 export default function CardIntegralRanking({ item, position }) {
-
-    console.log(item);
     
     const integralScore = Number(item?.integral_score ?? 0);
     const candidateImage = item?.candidate_image || item?.electoral_lists?.candidate_image || null;
