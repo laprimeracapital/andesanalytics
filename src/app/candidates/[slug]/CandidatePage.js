@@ -5,330 +5,9 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { calculateAge, formatDate, getGenderLabel, getStatusClass } from "@/helpers/calculate-slug";
 import Header from "@/components/layout/header";
-import ProgressBar from "@/components/Progress/ProgressBar";
 import Image from "next/image";
-
-function getFirstRecord(value) {
-    if (Array.isArray(value)) return value[0] || null;
-    return value || null;
-}
-
-function parseMaybeJson(value, fallback = null) {
-    if (value === null || value === undefined || value === "") return fallback;
-    if (Array.isArray(value) || typeof value === "object") return value;
-
-    try {
-        return JSON.parse(value);
-    } catch {
-        return fallback;
-    }
-}
-
-function toArray(value) {
-    const parsed = parseMaybeJson(value, []);
-
-    if (Array.isArray(parsed)) return parsed.filter(Boolean);
-
-    if (parsed && typeof parsed === "object") {
-        return Object.entries(parsed).map(([key, item]) => ({
-            label: formatLabel(key),
-            value: item
-        }));
-    }
-
-    if (parsed) return [String(parsed)];
-
-    return [];
-}
-
-function toNumber(value) {
-    if (value === null || value === undefined || value === "") return null;
-
-    const number = Number(value);
-
-    if (Number.isNaN(number)) return null;
-
-    return number;
-}
-
-function formatScore(value) {
-    const number = toNumber(value);
-
-    if (number === null) return "No disponible";
-
-    return number.toFixed(2);
-}
-
-function formatLabel(value = "") {
-    return String(value)
-        .replaceAll("_", " ")
-        .replaceAll("-", " ")
-        .toLowerCase()
-        .replace(/\b\w/g, letter => letter.toUpperCase());
-}
-
-function scoreLevel(value) {
-    const number = toNumber(value);
-
-    if (number === null) return "Sin dato";
-    if (number >= 90) return "Muy alto";
-    if (number >= 80) return "Alto";
-    if (number >= 70) return "Medio alto";
-    if (number >= 60) return "Medio";
-    return "Bajo";
-}
-
-function ScoreCard({ label, value, detail }) {
-    const number = toNumber(value);
-    const width = number === null ? 0 : Math.max(0, Math.min(100, number));
-
-    return (
-        <div className="border border-solid border-default rounded-md p-4">
-            <div className="w-full flex items-start justify-between gap-md">
-                <div>
-                    <p className="text-xs text-muted">{label}</p>
-                    <p className="text-2xl font-medium mt-2">{number === null ? "—" : number.toFixed(2)}</p>
-                </div>
-                <span className="badge badge-secondary">{scoreLevel(number)}</span>
-            </div>
-
-            <ProgressBar score={width} />
-
-            {detail && ( <p className="text-xs text-muted mt-2">{detail}</p> )}
-        </div>
-    );
-}
-
-function InfoCard({ label, value }) {
-    return (
-        <div className="border border-solid border-default bg-surface-secondary rounded-md p-4">
-            <p className="text-xs text-muted">{label}</p>
-            <p className="text-sm font-medium mt-2">
-                {value || "No disponible"}
-            </p>
-        </div>
-    );
-}
-
-function SectionHeader({ label, title, description }) {
-    return (
-        <div>
-            <p className="label text-primary">{label}</p>
-            <h2 className="text-2xl font-medium mt-2">{title}</h2>
-            {description && (
-                <p className="text-sm text-muted mt-2 leading-normal">
-                    {description}
-                </p>
-            )}
-        </div>
-    );
-}
-
-function EmptyAnalysis({ title = "Análisis no disponible" }) {
-    return (
-        <div className="card text-center">
-            <p className="text-sm text-muted">
-                {title}. Verifica que la consulta de Supabase esté trayendo esta relación.
-            </p>
-        </div>
-    );
-}
-
-function TextList({ items, emptyText = "No hay información registrada." }) {
-    const list = toArray(items);
-
-    if (!list.length) {
-        return (
-            <p className="text-sm text-muted">
-                {emptyText}
-            </p>
-        );
-    }
-
-    return (
-        <ul className="w-full flex flex-col gap-sm">
-            {list.map((item, index) => {
-                if (typeof item === "object" && item?.label) {
-                    return (
-                        <li key={`${item.label}-${index}`} className="text-sm leading-normal">
-                            <span className="font-medium">{item.label}:</span>{" "}
-                            <span className="text-muted">{String(item.value)}</span>
-                        </li>
-                    );
-                }
-
-                return (
-                    <li key={`${String(item)}-${index}`} className="text-sm leading-normal">
-                        {String(item)}
-                    </li>
-                );
-            })}
-        </ul>
-    );
-}
-
-function ProposalGrid({ proposals }) {
-    const data = parseMaybeJson(proposals, {});
-    const entries = Object.entries(data || {});
-
-    if (!entries.length) {
-        return (
-            <p className="text-sm text-muted">
-                No hay propuestas sectoriales registradas.
-            </p>
-        );
-    }
-
-    return (
-        <div className="w-full grid grid-cols-1 gap-md sm:grid-cols-2 lg:grid-cols-4">
-            {entries.map(([key, value]) => (
-                <ScoreCard
-                    key={key}
-                    label={formatLabel(key)}
-                    value={value}
-                    detail="Cantidad o peso sectorial registrado"
-                />
-            ))}
-        </div>
-    );
-}
-
-function ProfessionalExperience({ items }) {
-    const list = toArray(items);
-
-    if (!list.length) {
-        return (
-            <p className="text-sm text-muted">
-                No hay experiencia profesional registrada.
-            </p>
-        );
-    }
-
-    return (
-        <div className="w-full grid grid-cols-1 gap-md md:grid-cols-2">
-            {list.map((item, index) => {
-                const title =
-                    item.institution ||
-                    item.centroTrabajo ||
-                    item.label ||
-                    "Experiencia registrada";
-
-                const position =
-                    item.position ||
-                    item.ocupacionProfesion ||
-                    item.value ||
-                    "Cargo no disponible";
-
-                const place = [
-                    item.district,
-                    item.province,
-                    item.department
-                ].filter(Boolean).join(", ");
-
-                const years = [
-                    item.year_from || item.anioTrabajoDesde,
-                    item.year_to || item.anioTrabajoHasta
-                ].filter(Boolean).join(" - ");
-
-                return (
-                    <article key={`${title}-${index}`} className="border rounded-md p-md">
-                        <p className="text-xs text-muted">
-                            {item.sector || "Experiencia"}
-                        </p>
-                        <h3 className="text-sm font-medium mt-2">
-                            {title}
-                        </h3>
-                        <p className="text-sm text-muted mt-1">
-                            {position}
-                        </p>
-
-                        <div className="w-full flex flex-wrap gap-sm mt-md">
-                            {years && (
-                                <span className="badge badge-secondary">
-                                    {years}
-                                </span>
-                            )}
-                            {place && (
-                                <span className="badge badge-secondary">
-                                    {place}
-                                </span>
-                            )}
-                        </div>
-
-                        {item.comment && (
-                            <p className="text-xs text-muted leading-normal mt-md">
-                                {item.comment}
-                            </p>
-                        )}
-                    </article>
-                );
-            })}
-        </div>
-    );
-}
-
-function AcademicBackground({ items }) {
-    const list = toArray(items);
-
-    if (!list.length) {
-        return (
-            <p className="text-sm text-muted">
-                No hay formación académica registrada.
-            </p>
-        );
-    }
-
-    return (
-        <div className="w-full grid grid-cols-1 gap-md md:grid-cols-2">
-            {list.map((item, index) => {
-                const institution =
-                    item.institution ||
-                    item.universidad ||
-                    item.label ||
-                    "Institución no disponible";
-
-                const degree =
-                    item.degree ||
-                    item.carreraUni ||
-                    item.value ||
-                    "Grado no disponible";
-
-                return (
-                    <article key={`${institution}-${index}`} className="border rounded-md p-md">
-                        <p className="text-xs text-muted">
-                            {item.status || "Formación académica"}
-                        </p>
-                        <h3 className="text-sm font-medium mt-2">
-                            {degree}
-                        </h3>
-                        <p className="text-sm text-muted mt-1">
-                            {institution}
-                        </p>
-
-                        {item.year && (
-                            <span className="badge badge-secondary mt-md">
-                                {item.year}
-                            </span>
-                        )}
-                    </article>
-                );
-            })}
-        </div>
-    );
-}
-
-function TextBlock({ title, children }) {
-    if (!children) return null;
-
-    return (
-        <div className="border rounded-md p-md">
-            <h3 className="text-sm font-medium">{title}</h3>
-            <p className="text-sm text-muted leading-normal mt-2">
-                {children}
-            </p>
-        </div>
-    );
-}
+import { formatScore, getFirstRecord, toArray } from "@/helpers/candidate.helper";
+import { AcademicBackground, EmptyAnalysis, InfoCard, ProfessionalExperience, ProposalGrid, ScoreCard, SectionHeader, TextBlock, TextList } from "@/components/ui/UICompontents";
 
 export default function CandidatePage() {
 
@@ -336,17 +15,13 @@ export default function CandidatePage() {
 
     const { candidates = [], loadCandidates } = useDB();
 
-    const electoralList = candidates.find(
-        item => String(item.slug) === String(slug)
-    );
+    const electoralList = candidates.find(item => String(item.slug) === String(slug));
 
     if (loadCandidates) {
         return (
             <main className="w-full min-h-screen grid place-items-center">
                 <div className="card text-center">
-                    <p className="text-sm text-muted">
-                        Cargando información electoral...
-                    </p>
+                    <p className="text-sm text-muted">Cargando información electoral...</p>
                 </div>
             </main>
         );
@@ -377,11 +52,7 @@ export default function CandidatePage() {
 
     const members = electoralList.electoral_candidates || [];
 
-    const mayor = members.find(candidate =>
-        candidate.position_name
-            ?.toUpperCase()
-            .includes("ALCALDE")
-    );
+    const mayor = members.find(candidate => candidate.position_name?.toUpperCase().includes("ALCALDE"));
 
     const councilMembers = members
         .filter(candidate =>
@@ -395,39 +66,19 @@ export default function CandidatePage() {
                 Number(second.candidate_number || 0)
         );
 
-    const politicalOrganization =
-        electoralList.political_organization ||
-        electoralList.organization_name ||
-        "Organización política";
+    const politicalOrganization = electoralList.political_organization || electoralList.organization_name || "Organización política";
 
-    const listStatus =
-        electoralList.list_status ||
-        mayor?.status ||
-        "Sin estado";
+    const listStatus = electoralList.list_status || mayor?.status || "Sin estado";
 
-    const workPlan =
-        electoralList.work_plan || null;
+    const workPlan = electoralList.work_plan || null;
 
-    const mayorAge = calculateAge(
-        mayor?.birth_date ||
-        mayor?.date_of_birth
-    );
+    const mayorAge = calculateAge(mayor?.birth_date || mayor?.date_of_birth);
 
-    const planAnalysis = getFirstRecord(
-        electoralList.electoral_plan_analysis ||
-        electoralList.plan_analysis
-    );
+    const planAnalysis = getFirstRecord(electoralList.electoral_plan_analysis || electoralList.plan_analysis);
 
-    const candidateAnalysis = getFirstRecord(
-        electoralList.electoral_candidate_analysis ||
-        mayor?.electoral_candidate_analysis ||
-        electoralList.candidate_analysis
-    );
+    const candidateAnalysis = getFirstRecord(electoralList.electoral_candidate_analysis || mayor?.electoral_candidate_analysis || electoralList.candidate_analysis);
 
-    const integralAnalysis = getFirstRecord(
-        electoralList.electoral_integral_analysis ||
-        electoralList.integral_analysis
-    );
+    const integralAnalysis = getFirstRecord(electoralList.electoral_integral_analysis || electoralList.integral_analysis);
 
     const planStrengths = toArray(planAnalysis?.strengths);
     const planWeaknesses = toArray(planAnalysis?.weaknesses);
@@ -442,7 +93,6 @@ export default function CandidatePage() {
     const specializations = toArray(candidateAnalysis?.specializations);
     const recognitions = toArray(candidateAnalysis?.recognitions);
 
-    console.log(specializations);
 
     return (
         <>
@@ -586,54 +236,15 @@ export default function CandidatePage() {
                             {integralAnalysis ? (
                                 <>
                                     <div className="w-full grid grid-cols-1 gap-md md:grid-cols-3">
-                                        <ScoreCard
-                                            label="Índice integral"
-                                            value={integralAnalysis.integral_score}
-                                            detail="Resultado ponderado final"
-                                        />
-
-                                        <ScoreCard
-                                            label="Plan de gobierno"
-                                            value={integralAnalysis.plan_score}
-                                            detail="Peso técnico del documento"
-                                        />
-
-                                        <ScoreCard
-                                            label="Perfil del candidato"
-                                            value={integralAnalysis.candidate_profile_score}
-                                            detail="Trayectoria y capacidades"
-                                        />
-
-                                        <ScoreCard
-                                            label="Alineamiento plan-perfil"
-                                            value={integralAnalysis.plan_execution_alignment_score}
-                                            detail="Coherencia entre propuesta y experiencia"
-                                        />
-
-                                        <ScoreCard
-                                            label="Gobernabilidad"
-                                            value={integralAnalysis.governance_score}
-                                        />
-
-                                        <ScoreCard
-                                            label="Ejecución"
-                                            value={integralAnalysis.execution_score}
-                                        />
-
-                                        <ScoreCard
-                                            label="Consistencia técnica"
-                                            value={integralAnalysis.technical_consistency_score}
-                                        />
-
-                                        <ScoreCard
-                                            label="Respuesta territorial"
-                                            value={integralAnalysis.territorial_response_score}
-                                        />
-
-                                        <ScoreCard
-                                            label="Comunicación estratégica"
-                                            value={integralAnalysis.strategic_communication_score}
-                                        />
+                                        <ScoreCard label="Índice integral" value={integralAnalysis.integral_score} detail="Resultado ponderado final" />
+                                        <ScoreCard label="Plan de gobierno" value={integralAnalysis.plan_score} detail="Peso técnico del documento" />
+                                        <ScoreCard label="Perfil del candidato" value={integralAnalysis.candidate_profile_score} detail="Trayectoria y capacidades" />
+                                        <ScoreCard label="Alineamiento plan-perfil" value={integralAnalysis.plan_execution_alignment_score} detail="Coherencia entre propuesta y experiencia" />
+                                        <ScoreCard label="Gobernabilidad" value={integralAnalysis.governance_score} />
+                                        <ScoreCard label="Ejecución" value={integralAnalysis.execution_score} />
+                                        <ScoreCard label="Consistencia técnica" value={integralAnalysis.technical_consistency_score} />
+                                        <ScoreCard label="Respuesta territorial" value={integralAnalysis.territorial_response_score} />
+                                        <ScoreCard label="Comunicación estratégica" value={integralAnalysis.strategic_communication_score} />
                                     </div>
                                 </>
                             ) : (
@@ -764,70 +375,19 @@ export default function CandidatePage() {
                             {candidateAnalysis ? (
                                 <>
                                     <div className="w-full grid grid-cols-1 gap-md md:grid-cols-3">
-                                        <ScoreCard
-                                            label="Perfil general"
-                                            value={candidateAnalysis.general_score}
-                                        />
-
-                                        <ScoreCard
-                                            label="Formación académica"
-                                            value={candidateAnalysis.academic_training_score}
-                                        />
-
-                                        <ScoreCard
-                                            label="Especialización"
-                                            value={candidateAnalysis.specialization_score}
-                                        />
-
-                                        <ScoreCard
-                                            label="Gestión pública"
-                                            value={candidateAnalysis.public_management_score}
-                                        />
-
-                                        <ScoreCard
-                                            label="Experiencia ejecutiva"
-                                            value={candidateAnalysis.executive_experience_score}
-                                        />
-
-                                        <ScoreCard
-                                            label="Experiencia municipal"
-                                            value={candidateAnalysis.municipal_experience_score}
-                                        />
-
-                                        <ScoreCard
-                                            label="Experiencia regional"
-                                            value={candidateAnalysis.regional_experience_score}
-                                        />
-
-                                        <ScoreCard
-                                            label="Sector privado"
-                                            value={candidateAnalysis.private_sector_experience_score}
-                                        />
-
-                                        <ScoreCard
-                                            label="Capacidad técnica"
-                                            value={candidateAnalysis.technical_capacity_score}
-                                        />
-
-                                        <ScoreCard
-                                            label="Conocimiento territorial"
-                                            value={candidateAnalysis.territorial_knowledge_score}
-                                        />
-
-                                        <ScoreCard
-                                            label="Liderazgo"
-                                            value={candidateAnalysis.leadership_score}
-                                        />
-
-                                        <ScoreCard
-                                            label="Gobernanza"
-                                            value={candidateAnalysis.governance_capacity_score}
-                                        />
-
-                                        <ScoreCard
-                                            label="Alineamiento con plan"
-                                            value={candidateAnalysis.plan_alignment_score}
-                                        />
+                                        <ScoreCard label="Perfil general" value={candidateAnalysis.general_score} />
+                                        <ScoreCard label="Formación académica" value={candidateAnalysis.academic_training_score} />
+                                        <ScoreCard label="Especialización" value={candidateAnalysis.specialization_score} />
+                                        <ScoreCard label="Gestión pública" value={candidateAnalysis.public_management_score} />
+                                        <ScoreCard label="Experiencia ejecutiva" value={candidateAnalysis.executive_experience_score} />
+                                        <ScoreCard label="Experiencia municipal" value={candidateAnalysis.municipal_experience_score} />
+                                        <ScoreCard label="Experiencia regional" value={candidateAnalysis.regional_experience_score} />
+                                        <ScoreCard label="Sector privado" value={candidateAnalysis.private_sector_experience_score} />
+                                        <ScoreCard label="Capacidad técnica" value={candidateAnalysis.technical_capacity_score} />
+                                        <ScoreCard label="Conocimiento territorial" value={candidateAnalysis.territorial_knowledge_score} />
+                                        <ScoreCard label="Liderazgo" value={candidateAnalysis.leadership_score} />
+                                        <ScoreCard label="Gobernanza" value={candidateAnalysis.governance_capacity_score} />
+                                        <ScoreCard label="Alineamiento con plan" value={candidateAnalysis.plan_alignment_score} />
                                     </div>
 
                                     <div className="w-full grid grid-cols-1 gap-md sm:grid-cols-2 lg:grid-cols-4">
